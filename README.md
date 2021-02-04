@@ -1,6 +1,6 @@
 # InstrumentServices 
-***
-> Name: frank francis          Contact way: descosmos@163.com
+> Name: frank-francis          
+Contact way: descosmos@163.com
 
 ## Features
 ***
@@ -9,7 +9,7 @@ Indeed, the internal part of InstrumentServices are libimobiledevice, libplist, 
 
 ## Developing Enviorment
 ***
-> The InstrumentServices has built libimobiledevice.dll, libplist.dll and other nessceary dynamic linking library file sucessfully,
+> The InstrumentServices has built libimobiledevice.dll, libplist.dll and other nessceary dynamic linking library files sucessfully,
     Therefore, developer don not need to rebuild these files twice.
 - python:      python3.7.7
 - os:         windows10
