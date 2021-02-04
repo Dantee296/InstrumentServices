@@ -101,9 +101,11 @@ class DTXMessage:
         if not has_payload:
             return ret
         
+        # Check the legality of of dtxMessageHeader received.
         if ret._message_header.length != len(buffer) - cursor - (ret._message_header.fragmentCount - 1) * sizeof(DTXMessageHeader):
             raise ValueError("incorrect DTXMessageHeader->length")
 
+        # The dtxMessage have just one fragment.
         if ret._message_header.fragmentCount == 1:
             payload_buf = buffer[cursor:]
         else: 
@@ -130,6 +132,8 @@ class DTXMessage:
             cursor += sizeof(DTXAuxiliariesHeader)
             i = 0
             while i < ret._auxiliaries_header.length:
+                # The principle of archiving and unarchiving are similiar as content of funtions pyobject_to_auxiliary and auxiliary_to_pyobject.
+
                 m, t = struct.unpack("<II", buffer[cursor + i: cursor + i + 8])
                 if m != 0xa: # magic
                     raise ValueError("incorrect auxiliary magic")
@@ -250,6 +254,7 @@ def ns_keyed_archiver(obj):
     return archiver.archive(obj)
 
 def pyobject_to_auxiliary(var):
+    # var is auxiliary
     if type(var) is int:
         if abs(var) < 2**32:
             return struct.pack('<iii', 0xa, 3, var)

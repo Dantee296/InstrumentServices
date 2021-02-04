@@ -1,5 +1,7 @@
 import argparse
-from ctypes import cdll, c_int, c_char, POINTER, c_char_p, c_byte, pointer, cast, c_void_p, c_uint, create_string_buffer, Structure, c_uint32, c_int32, c_uint16, c_uint64, c_int64, sizeof, create_string_buffer, string_at
+from ctypes import cdll, c_int, c_char, POINTER, c_char_p, c_byte, pointer, cast, c_void_p, c_uint, \
+    create_string_buffer, Structure, c_uint32, c_int32, c_uint16, c_uint64, c_int64, sizeof, create_string_buffer, \
+    string_at
 from threading import Thread, Event
 import time
 import traceback
@@ -11,17 +13,17 @@ from zeroconf import ServiceBrowser, Zeroconf
 from utils import aes_256_cbc_decrypt, aes_256_cbc_encrypt
 
 from device_service import DeviceService
-from libimobiledevice import            \
-    instrument_client_start_service,    \
-    instrument_client_free,             \
-    instrument_receive,                 \
-    instrument_receive_with_timeout,    \
-    instrument_send_command,            \
+from libimobiledevice import \
+    instrument_client_start_service, \
+    instrument_client_free, \
+    instrument_receive, \
+    instrument_receive_with_timeout, \
+    instrument_send_command, \
     InstrumentError
 
-from dtxlib import DTXMessage, DTXMessageHeader,    \
-    auxiliary_to_pyobject, pyobject_to_auxiliary,   \
-    pyobject_to_selector, selector_to_pyobject
+from dtxlib import DTXMessage, DTXMessageHeader, DTXPayloadHeader, \
+    auxiliary_to_pyobject, pyobject_to_auxiliary, \
+    pyobject_to_selector, selector_to_pyobject, DTXAuxiliariesHeader
 from bpylist import archiver, bplist
 from utils import parse_plist_to_xml
 import struct
@@ -847,6 +849,102 @@ class DTXClientMixin:
                     ret = self._dtx_demux_manager[key].message
                     self._dtx_demux_manager.pop(key)
                     return ret
+    def interpret_dtxMessgae(self, buffer: bytes, name):
+        def illustrate_messageHeader(buf):
+            """
+            Interpret the content of DTXMessageHeader
+            """
+            print("DtXMessageHeader:")
+            print("magic: ", hex(header.magic))
+            print("cb: ", header.cb)
+            print("fragmentId: ", header.fragmentId)
+            print("fragmentCount: ", header.fragmentCount)
+            print("message length: ", header.length)
+            print("identifier: ", header.identifier)
+            print("conversationIndex: ", header.conversationIndex)
+            print("channelCode: ", header.channelCode)
+            print("expectsReply: ", header.expectsReply)
+            print("\n")
+
+        def illustrate_payloadHeader(buf):
+            """
+            Interpret the content of DTXMessagePayload if exsits.
+            """
+            print("DTXMessagePayloadHeader:")
+            print("flags: ", hex(payload_header.flags))
+            print("auxiliaryLength: ", payload_header.auxiliaryLength)
+            print("totalLength: ", payload_header.totalLength)
+            print("\n")
+
+        def illustrate_auxiliaryHeader(buf):
+            """
+            Interpret the header of auxiliary.
+            """
+            print("DTXMessageAuxiliaryHeader:")
+            print("magic: ", hex(auxiliary_header.magic))
+            print("length: ", auxiliary_header.length)
+            print("\n")
+
+        def illustrate_auxiliaryContent(buf):
+            """
+            Interpret the auxiliary content if exsits.
+            """
+            print("Auxiliary content:")
+            print("auxiliary: ", _auxiliary)
+            print("\n")
+
+        def illustrate_selector(buf):
+            """
+            Interpret the content of selector.
+            """
+            print("Selector:")
+            print("selector: ", selector)
+
+        print("______________ The content of dtxMessage in " + name)
+        print("______________ Start: ")
+        print("\n")
+        buf = buffer
+        cursor = sizeof(DTXMessageHeader)
+        header = DTXMessageHeader.from_buffer_copy(buf[0: cursor])
+        illustrate_messageHeader(header)
+
+        if header.length > 0:
+            payload_header = DTXPayloadHeader.from_buffer_copy(buf[cursor: cursor + sizeof(DTXPayloadHeader)])
+            cursor += sizeof(DTXPayloadHeader)
+            illustrate_payloadHeader(payload_header)
+
+            if payload_header.auxiliaryLength > 0:
+                auxiliary_header = DTXAuxiliariesHeader.from_buffer_copy(
+                    buf[cursor: cursor + sizeof(DTXAuxiliariesHeader)])
+                cursor += sizeof(DTXAuxiliariesHeader)
+                illustrate_auxiliaryHeader(auxiliary_header)
+
+                if auxiliary_header.length > 0:
+                    # _auxiliary = auxiliary_to_pyobject(buf[cursor: cursor + auxiliary_header.length])
+
+                    _auxiliary = []
+                    m, t = struct.unpack("<ii", buf[cursor: cursor + 8])
+                    if t == 2:
+                        l, = struct.unpack("<i", buf[cursor + 8: cursor + 12])
+                        assert len(buf[cursor: cursor + auxiliary_header.length]) == 12 + l
+                        _auxiliary.append(archiver.unarchive(buf[cursor + 12:cursor + auxiliary_header.length]))
+                    elif t == 3:
+                        n, = struct.unpack("<i", buf[cursor + 8: cursor + 12])
+                        _auxiliary.append(n)
+                    elif t == 4:
+                        n, = struct.unpack("<q", buf[cursor + 8: cursor + 16])
+                        _auxiliary.append(n)
+
+                    cursor += auxiliary_header.length
+                    illustrate_auxiliaryContent(_auxiliary)
+
+            if header.length - payload_header.auxiliaryLength - sizeof(DTXPayloadHeader) != 0:
+                selector = archiver.unarchive(buf[cursor:])
+                illustrate_selector(selector)
+
+        print("__________ End")
+        print("\n")    
+
 
     def _setup_manager(self):
         if hasattr(self, "_dtx_demux_manager"):
@@ -981,6 +1079,15 @@ class DTXUSBTransport:
             if instrument_send_command(client, buffer, len(buffer), pointer(sent)) != InstrumentError.INSTRUMENT_E_SUCCESS:
                 return False
             buffer = buffer[sent.value:]
+
+        """
+        # Redirect data of buffer to send.txt.
+        with open("send" + time.time().__str__() + ".bin", 'wb+') as f:
+            f.write(buffer)
+
+        f.close()
+        """
+
         return True
 
     def recv_all(self, client:c_void_p, length, timeout=-1) -> bytes:
@@ -1006,6 +1113,14 @@ class DTXUSBTransport:
                 # print(f"service_receive error: {err}")
                 return None
             ret += rb[:received.value]
+
+        """
+        # Redirect dat of ret to recv.txt
+        with open("recv" + time.time().__str__() + ".bin", 'wb+') as f:
+            f.write(ret)
+
+        f.close()
+        """
         return ret
         pass
     
