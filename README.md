@@ -11,7 +11,7 @@ Indeed, the internal part of InstrumentServices are libimobiledevice, libplist, 
 ***
 > The InstrumentServices has built libimobiledevice.dll, libplist.dll and other nessceary dynamic linking library file sucessfully,
     Therefore, developer don not need to rebuild these files twice.
-- pthon:      python3.7.7
+- python:      python3.7.7
 - os:         windows10
 - compiler:   pycharm Community Edition 2020.3.2
 
@@ -82,7 +82,7 @@ The libirary bundles the following command-line utilities in the tools directory
 
 Please consult th usage information or manual pages of each utility for a documentation of avaliable command
 line options and usage examples like this:
-'''
+''' shell
 python.exe app.py
 '''
 ### instrument_service.py
