@@ -82,9 +82,10 @@ The libirary bundles the following command-line utilities in the tools directory
 
 Please consult th usage information or manual pages of each utility for a documentation of avaliable command
 line options and usage examples like this:
-''' shell
+``` powershell
 python.exe app.py
-'''
+```
+
 ### instrument_service.py
 
 #### Utilities
