@@ -8,7 +8,6 @@ InstrumentServices is a cross-platform software library used to monitor the appl
 Indeed, the internal part of InstrumentServices are libimobiledevice, libplist, usbmuxd and openSSL.
 
 ## Developing Enviorment
-***
 > The InstrumentServices has built libimobiledevice.dll, libplist.dll and other nessceary dynamic linking library files sucessfully,
     Therefore, developer don not need to rebuild these files twice.
 - python:      python3.7.7
@@ -16,7 +15,6 @@ Indeed, the internal part of InstrumentServices are libimobiledevice, libplist, 
 - compiler:   pycharm Community Edition 2020.3.2
 
 ## Project catalogue
-***
 - byplist
 - libimobiledevice
 - zeroconfig
@@ -51,7 +49,6 @@ Indeed, the internal part of InstrumentServices are libimobiledevice, libplist, 
 - utils_unittesting.py
 
 ## Usage 
-***
 Every availiable command can be sent to IOS device by using app.py.
 ### app.py
 
@@ -119,14 +116,12 @@ python.exe instrument_service.py
 
 
 ## Links
-***
 - libimobiledevice Repository: [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice)
 - usbmuxd Repository: [usbmuxd](https://github.com/libimobiledevice/usbmuxd)
 - libplist Repository: [libplist](https://github.com/libimobiledevice/libplist)
 - openSSL Repository: [openSSL](https://github.com/openssl/openssl)
 
 ## Document
-***
 > Documents for analyse the functions or class in each py file.
 
 
