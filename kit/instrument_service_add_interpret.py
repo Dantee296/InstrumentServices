@@ -1155,6 +1155,9 @@ class DTXUSBTransport:
         pass
 
     def interpret_dtxMessgae(self, buffer: bytes, name):
+        """
+        The function is used to interprete the dtxMessage received.
+        """
         def illustrate_messageHeader(buf):
             """
             Interpret the content of DTXMessageHeader
