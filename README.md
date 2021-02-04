@@ -5,11 +5,11 @@ Contact way: descosmos@163.com
 ## Features
 ***
 InstrumentServices is a cross-platform software library used to monitor the apple device without jailbeaking.
-Indeed, the internal part of InstrumentServices are libimobiledevice, libplist, usbmuxd and openSSL.
+Indeed, the internal parts of InstrumentServices are libimobiledevice, libplist, usbmuxd and openSSL.
 
 ## Developing Enviorment
 > The InstrumentServices has built libimobiledevice.dll, libplist.dll and other nessceary dynamic linking library files sucessfully,
-    Therefore, developer don not need to rebuild these files twice.
+    Therefore, developer does not need to rebuild these files twice.
 - python:      [python3.7.7](https://www.python.org/downloads/release/python-377/)
 - os:         windows10
 - compiler:   [pycharm Community Edition 2020.3.2](https://www.jetbrains.com/pycharm/download/#section=windows)
@@ -122,6 +122,11 @@ python.exe instrument_service.py
 - openSSL Repository: [openSSL](https://github.com/openssl/openssl)
 
 ## Document
+### The document about instrumentServices
 > Documents for analyse the functions or class in each py file.
+
+### The document about PerDog in IOS
+- [JMInstrument](https://github.com/ljm5000/JMInstrument)
+- [ios instruments](https://blog.csdn.net/aimsgmiss/article/details/84561755)
 
 
