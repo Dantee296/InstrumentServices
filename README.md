@@ -58,6 +58,7 @@ Every availiable command can be sent to IOS device by using app.py.
 #### Utilities
 The libirary bundles the following command-line utilities in the tools directory:
 | Utility     |     Description     |
+| :---------- |  ------------------:|
 | devices     | Illustrate the device ID and the type of connection(wireless, USB) |
 | applications| List all applications of the device |
 | deviceinfo  | Illustrate the information of device(including device_name, cpu_type and so on) |
@@ -89,6 +90,7 @@ python.exe app.py
 #### Utilities
 The libirary bundles the following command-line utilities in the tools directory:
 | Utility     |     Description     |
+| :---------- |  ------------------:|
 | channels    | List all aviliable channels in device |
 | sysmontap   | Illustrate the CPU_INST_NAME_11 data |
 | graphics    | Illustrate the GPU data |
