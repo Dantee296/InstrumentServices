@@ -90,7 +90,7 @@ python.exe app.py
 #### Utilities
 The libirary bundles the following command-line utilities in the tools directory:
 | Utility     |     Description     |
-| :---------- |  ------------------:|
+| :---------- | :|
 | channels    | List all aviliable channels in device |
 | sysmontap   | Illustrate the CPU_INST_NAME_11 data |
 | graphics    | Illustrate the GPU data |
