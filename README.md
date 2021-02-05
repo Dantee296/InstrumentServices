@@ -108,7 +108,7 @@ The libirary bundles the following command-line utilities in the tools directory
 | wireless    | Check the state of wireless mode and print it |
 | test        | Just for test |
 
-Please consult th usage information or manual pages of each utility for a documentation of avaliable command
+Please consult the usage information or manual pages of each utility for a documentation of avaliable command
 line options and usage examples like this:
 ``` powershell
 python.exe instrument_service.py
@@ -123,7 +123,7 @@ python.exe instrument_service.py
 
 ## Document
 ### The document about instrumentServices
-> Documents for analyse the functions or class in each py file.
+> Documents for analysing the functions or classes in each py file.
 
 ### The document about PerDog in IOS
 - [JMInstrument](https://github.com/ljm5000/JMInstrument)
