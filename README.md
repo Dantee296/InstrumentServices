@@ -123,8 +123,8 @@ python.exe instrument_service.py
 
 ## Document
 ### The document about instrumentServices
-> Documents for analysing the functions or classes in each py file.
-Documents for py files in idb-master directory.
+- Documents for analysing the functions or classes in analysis directory.
+- Documents for py files in idb-master directory.
 
 ### The document about PerDog in IOS
 - [JMInstrument](https://github.com/ljm5000/JMInstrument)
