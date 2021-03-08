@@ -1,4 +1,8 @@
     def interpret_dtxMessgae(self, buffer: bytes, name):
+        """
+        Interrupt brief dtxMessage.
+        """
+
         def illustrate_messageHeader(buf):
             """
             Interpret the content of DTXMessageHeader
