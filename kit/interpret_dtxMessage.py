@@ -75,6 +75,7 @@
         print("______________ The content of dtxMessage in " + name)
         print("______________ Start: ")
         print("\n")
+        # There are two kinds in type of data stream: perfect DTXMessageHeader and Auxiliary.
         buf = buffer
         _buf = buffer
         type_of_buf = check_type(buf)
@@ -85,6 +86,7 @@
         elif type_of_buf == "null":
             return
         elif type_of_buf == "DTXMessagePayloadHeader":
+            # The type of buf is DTXPayloadHeader, then handle it.
             cur = 0
             payload_header = DTXPayloadHeader.from_buffer_copy(buf[0: sizeof(DTXPayloadHeader)])
             cur += sizeof(DTXPayloadHeader)
