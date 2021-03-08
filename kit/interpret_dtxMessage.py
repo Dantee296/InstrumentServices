@@ -54,6 +54,9 @@
             print("selector: ", selector)
 
         def check_type(buf):
+            """
+            Judging the type of infomation stream received though magic and so on.
+            """
             length = len(buf)
             if length >= 32:
                 test_header = DTXMessageHeader.from_buffer_copy(buf[0: sizeof(DTXMessageHeader)])
